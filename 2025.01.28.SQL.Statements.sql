@@ -53,8 +53,41 @@ INSERT INTO employees VALUES('E001','Amit Kumar','amit@yahoo.com','9988776655','
 INSERT INTO employees VALUES('E002','Vikas Kumar','vikas@yahoo.com','8877665544','D001','DG001',34000);
 INSERT INTO employees VALUES('E003','Rohit Kumar','rohit@yahoo.com','7766554433','D002','DG002',34000);
 
--- View all records
+-- View all records with all columns
 SELECT * FROM employees;
 
+-- View all records with specific columns
+SELECT empid, name, basic FROM employees;
 
+-- View the record of employee having employee id as E002
+SELECT * FROM employees WHERE empid='E002';
 
+-- View the record of employee other than employee id as E002
+-- Solution 1
+SELECT * FROM employees WHERE empid<>'E002';
+-- Solution 2
+SELECT * FROM employees WHERE NOT empid='E002';
+-- Solution 3
+SELECT * FROM employees WHERE empid!='E002';
+
+-- View the records of employees having their salary from 10000 to 25000
+-- Solution 1
+SELECT * FROM employees WHERE basic>=10000 AND basic<=25000;
+-- Solution 2
+SELECT * FROM employees WHERE basic BETWEEN 10000 AND 25000;
+
+-- Creating and using virtual columns
+-- Create a query to show the DA as 95% of basic, HRA as 65% of Basic and PF as 12% of basic.
+SELECT empid as 'Employee ID', name as 'Employee Name', basic, 0.95*basic as 'DA', 0.65*basic as 'HRA', 0.12*basic as 'PF' FROM employees;
+
+-- Show the department name and designation names rather than their codes
+-- Solution 1
+SELECT e.empid, e.name, e.basic, d.deptname, dg.designame 
+FROM employees e, departments d, designations dg
+WHERE e.deptid=d.deptid AND e.desigid=dg.desigid;
+
+-- Solution 2
+SELECT e.empid, e.name, e.basic, d.deptname, dg.designame 
+FROM employees e
+JOIN departments d ON e.deptid=d.deptid
+JOIN designations dg ON e.desigid=dg.desigid;
